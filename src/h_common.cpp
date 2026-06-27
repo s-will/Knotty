@@ -99,21 +99,22 @@ brack_type *h_pop (brack_stack *st)
 }
 
 
-double knotty(char *sequence, char *structure){
+double knotty(std::string &sequence, std::string &structure){
     // Ian Wark June 2017
     // tell simfold to precompute penalties.
     // essential to not seg-faulting
-    create_size_penalties(strlen(sequence));
-    create_asymmetry_penalties(strlen(sequence));
+    create_size_penalties(sequence.length());
+    create_asymmetry_penalties(sequence.length());
 
-    W_final *min_fold = new W_final (sequence);
+	char* seq = &sequence[0];
+	memcpy (seq, sequence.data(), sequence.length()+1);
+    W_final *min_fold = new W_final (seq);
     if (min_fold == NULL) giveup ("Cannot allocate memory", "Knotty");
 
 	double energy = min_fold->knotty();
-    min_fold->return_structure (structure);
+    structure = min_fold->return_structure ();
 
     delete min_fold;
-
     return energy;
 }
 

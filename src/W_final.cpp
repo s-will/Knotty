@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stack>
 #include <list>
+#include <iostream>
 
 #include "pseudo_loop.h"
 #include "V_final.h"
@@ -179,7 +180,8 @@ double W_final::knotty(){
 	}
 	// Hosna: Feb 18, 2014
 	// after the backtrack is done, now we can fill the structure array with the help of minimum_fold array, f
-	fill_structure();
+	structure = std::string(nb_nucleotides,'.');
+	fill_structure(f,structure);
 
     if (debug)
     {
@@ -191,9 +193,8 @@ double W_final::knotty(){
     return energy;
 }
 
-void W_final::return_structure(char *structure){
-	strcpy (structure, this->structure);
-	//s_min_folding::return_structure(structure);
+std::string W_final::return_structure(){
+	return this->structure;
 }
 
 void W_final::compute_W(int j)
@@ -417,9 +418,6 @@ void W_final::backtrack(seq_interval *cur_interval){
 				return;
 			f[i].pair = j;
 			f[j].pair = i;
-
-			structure[i] = '(';
-			structure[j] = ')';
 
 			type = v->get_type (i,j);
 			if (debug)
@@ -983,76 +981,6 @@ void W_final::p_backtrack(seq_interval* cur_interval) {
     f = P->get_minimum_fold();
 
 }
-
-
- //Hosna, Feb 19, 2014
- //the algorithm I have in mind is something like this:
- /*
- for (int i = 0; i < nb_nucleotides; i++){
-    if (i < f[i].pair){
-       for (int j= 0; j < num_bands; j++){
-           if(f[i].pair < band[j]->end){ // i.e. i.pair[i] is nested in the band
-				structure[i] = band[j]->open;
-				structure[j] = band[j]->close;
-				isInABand=1;
-			 }
-		 }
-		if (!isInABand){
-			e = h_pop(st);
-			num_bands++;
-			band[num_bands] -> end = f[i].pair;
-			band[num_bands]->open = e->open;
-			band[num_bands]->close = e->close;
-
-		}
-	}else{ //having the closing base pair
-		for (int j= 0; j < num_bands; j++){
-			if (i == band[j]->end){
-				bracket_type *e;
-				e = new bracket_type;
-				e->open = band[j]->open;
-				e->close = bandpj]->close;
-				h_push(st,e);
-				break;
-			}
-		}
-	}
-}
-*/
-
-void W_final::fill_structure()
-{
-
-    std::vector<int> pair;
-	for(int i=0;i<nb_nucleotides;++i){
-		int j = f[i].pair;
-		if(structure[i] == '(' || structure[i] == ')' || j<0) continue;
-
-		if(j<i){
-			if(!pair.empty() && i==pair.back()){
-				pair.pop_back();
-				structure[j] = '(';
-				structure[i] = ')';
-			}
-		}
-		else{
-			if(pair.empty()){
-				pair.push_back(j);
-			}
-			else{
-				if(j<pair.back()) pair.push_back(j);
-				else{
-					structure[i] = '[';
-					structure[j] = ']';
-				}
-			}
-		}
-	}
-
-}
-
-
-
 void W_final::print_result ()
 // PRE:  The matrix V has been calculated and the results written in f
 // POST: Prints details of each elementary structure
@@ -1085,6 +1013,6 @@ void W_final::print_result ()
     }
     printf ("0....,....1....,....2....,....3....,....4....,....5....,....6....,....7....,....8\n");
     printf ("%s\n", sequence);
-    printf ("%s\n", structure);
+	std::cout << structure<< std::endl;
 
 }

@@ -21,8 +21,7 @@
 
 int main (int argc, char *argv[])
 {
-    char sequence[MAXSLEN];
-    char structure[MAXSLEN];
+    std::string sequence;
     double energy;
 
     bool cmd_line_error = false;
@@ -38,9 +37,9 @@ int main (int argc, char *argv[])
     else
     {
         // get sequence
-        strcpy (sequence, argv[1]);
+        sequence = argv[1];
         // important that this is before set_shape_file
-        cmd_line_options.set_sequence_length(strlen(sequence));
+        cmd_line_options.set_sequence_length(sequence.length());
 
         // addtional arguments
         if (argc > 2) {
@@ -123,7 +122,7 @@ int main (int argc, char *argv[])
 	// in HotKnots and ComputeEnergy package the most up-to-date parameters set is DP09.txt
 	// so we add it here
     fill_data_structures_with_new_parameters (getParamPath("parameters_DP09.txt"));
-
+    std::string structure;
     energy = knotty(sequence, structure);
 
     // End measuring time
@@ -131,10 +130,10 @@ int main (int argc, char *argv[])
     double runtime = (double)(end_time - start_time) / CLOCKS_PER_SEC;
 
     if (w) {
-        printf ("%s %.2lf\n", structure, energy);
+        std::cout << structure<< " " << energy << std::endl;
     } else {
-        printf ("Seq: %s\n", sequence);
-        printf ("RES: %s  %.2lf\n", structure, energy);
+        std::cout << "Seq: " << sequence << std::endl;
+        std::cout << "RES: " << structure<< "  " << energy << std::endl;
     }
 
     if (print_time) {

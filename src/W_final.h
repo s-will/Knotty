@@ -21,7 +21,7 @@ class W_final: public s_min_folding{
         // POST: fold sequence, return the MFE structure in structure, and return the MFE
 
 
-        void return_structure (char *structure) ;
+        std::string return_structure () ;
         // writes the predicted MFE structure into structure
 
 
@@ -33,7 +33,7 @@ class W_final: public s_min_folding{
         // and corresponds to P recurrence
         pseudo_loop *P;
 
-
+        std::string structure;
         // pointer to the final V matrix
         V_final *v;
 
@@ -60,13 +60,6 @@ class W_final: public s_min_folding{
         void print_result();
         // PRE:  The matrix V has been calculated and the results written in f
         // POST: Prints details of each elementary structure
-
-	void fill_structure();
-	// Hosna Feb 18, 2014
-	// This function goes over the f array and fills the structure knowing which base pairs with which
-
-
-
 };
 
 #endif /*W_FINAL_H_*/

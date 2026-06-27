@@ -3,6 +3,6 @@
 
 #include "h_struct.h"
 
-double knotty(char *sequence, char *structure);
+double knotty(std::string &sequence, std::string &structure);
 
 #endif /*HFOLD_H_*/
