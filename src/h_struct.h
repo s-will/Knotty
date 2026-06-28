@@ -4,6 +4,7 @@
 #include "structs.h"
 #include <vector>
 #include <string>
+#include <array>
 // another way to represent a structure. Used to measure free energy of a give structure etc.
 typedef struct h_str_features
 {
